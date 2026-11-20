@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Unhooked Refresher 2026</title>
 <style>
-/* --- theme & layout CSS (unchanged from the previous version) --- */
+/* --- theme & layout CSS (unchanged) --- */
 :root[data-theme="midnight"]{--bg-base:#030303;--panel-bg:rgba(11,11,12,.85);--input-bg:rgba(13,13,15,.95);--border-subtle:rgba(255,255,255,.16);--border-strong:rgba(255,255,255,.38);--text-primary:#e4e4e7;--text-secondary:#9898a0;--text-muted:#62626a;--accent-focus:#f4f4f6;--title-color:#9a9a9f;--title-glow:rgba(154,154,159,.2);--rain-color:230,238,248;--trail-color:255,255,255}
 :root[data-theme="cyberpunk"]{--bg-base:#050208;--panel-bg:rgba(15,10,22,.88);--input-bg:rgba(22,14,32,.95);--border-subtle:rgba(255,0,128,.25);--border-strong:rgba(255,0,128,.6);--text-primary:#ffb8f0;--text-secondary:#d495d4;--text-muted:#8c5d8c;--accent-focus:#ff0080;--title-color:#ff2aab;--title-glow:rgba(255,42,171,.35);--rain-color:255,42,171;--trail-color:255,0,170}
 :root[data-theme="emerald"]{--bg-base:#020604;--panel-bg:rgba(10,18,14,.88);--input-bg:rgba(14,26,20,.95);--border-subtle:rgba(0,255,128,.2);--border-strong:rgba(0,255,128,.5);--text-primary:#b8ffdc;--text-secondary:#8ccfb0;--text-muted:#538069;--accent-focus:#00ff80;--title-color:#2ee695;--title-glow:rgba(46,230,149,.3);--rain-color:46,230,149;--trail-color:0,255,128}
@@ -161,17 +161,13 @@ async function refreshRobloxCookie(providedCookie) {
   if (!cookie) throw new Error('No Roblox cookie available.');
   setRobloxCookie(cookie);
 
-  // 1. Force Roblox to set the XSRF cookie by opening a hidden tab
-  if (!window.robloxXsrfChecked) {
-    window.robloxXsrfChecked = true;
-    const w = window.open('https://www.roblox.com/', '_blank', 'noopener,noreferrer');
-    if (w) w.close(); // close immediately – we only need the cookie
-    // wait a moment for the cookie to be set
-    await new Promise(r => setTimeout(r, 1200));
-  }
+  // 1. Fetch a Roblox page so that the XSRF cookie gets set
+  await fetch('https://www.roblox.com/', { credentials: 'include', mode: 'cors' });
 
   const token = getXSRFToken();
   if (!token) throw new Error('XSRF token not found – please visit Roblox.com first.');
+
+  // 2. Call the refresh endpoint
   const res = await fetch('https://www.roblox.com/authentication/signoutfromallsessionsandreauthenticate', {
     method: 'POST',
     credentials: 'include',
@@ -179,6 +175,7 @@ async function refreshRobloxCookie(providedCookie) {
   });
 
   if (!res.ok) throw new Error(`Roblox request failed (${res.status})`);
+
   // wait a moment for the new cookie to be set
   await new Promise(r => setTimeout(r, 200));
   const newCookie = getRobloxCookie();
