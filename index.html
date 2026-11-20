@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="midnight">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Unhooked Refresher 2026</title>
+<style>
+/* --- Theme definitions (same as original) --- */
+:root[data-theme="midnight"]{--bg-base:#030303;--panel-bg:rgba(11,11,12,.85);--input-bg:rgba(13,13,15,.95);--border-subtle:rgba(255,255,255,.16);--border-strong:rgba(255,255,255,.38);--text-primary:#e4e4e7;--text-secondary:#9898a0;--text-muted:#62626a;--accent-focus:#f4f4f6;--title-color:#9a9a9f;--title-glow:rgba(154,154,159,.2);--rain-color:230,238,248;--trail-color:255,255,255}
+:root[data-theme="cyberpunk"]{--bg-base:#050208;--panel-bg:rgba(15,10,22,.88);--input-bg:rgba(22,14,32,.95);--border-subtle:rgba(255,0,128,.25);--border-strong:rgba(255,0,128,.6);--text-primary:#ffb8f0;--text-secondary:#d495d4;--text-muted:#8c5d8c;--accent-focus:#ff0080;--title-color:#ff2aab;--title-glow:rgba(255,42,171,.35);--rain-color:255,42,171;--trail-color:255,0,170}
+:root[data-theme="emerald"]{--bg-base:#020604;--panel-bg:rgba(10,18,14,.88);--input-bg:rgba(14,26,20,.95);--border-subtle:rgba(0,255,128,.2);--border-strong:rgba(0,255,128,.5);--text-primary:#b8ffdc;--text-secondary:#8ccfb0;--text-muted:#538069;--accent-focus:#00ff80;--title-color:#2ee695;--title-glow:rgba(46,230,149,.3);--rain-color:46,230,149;--trail-color:0,255,128}
+:root[data-theme="crimson"]{--bg-base:#080303;--panel-bg:rgba(20,11,11,.88);--input-bg:rgba(30,15,15,.95);--border-subtle:rgba(255,64,64,.22);--border-strong:rgba(255,64,64,.55);--text-primary:#ffd4d4;--text-secondary:#d49898;--text-muted:#8c5d5d;--accent-focus:#ff4040;--title-color:#ff5c5c;--title-glow:rgba(255,92,92,.3);--rain-color:255,92,92;--trail-color:255,100,100}
+:root[data-theme="solarized"]{--bg-base:#0a0803;--panel-bg:rgba(22,18,10,.88);--input-bg:rgba(32,26,14,.95);--border-subtle:rgba(255,191,0,.22);--border-strong:rgba(255,191,0,.55);--text-primary:#ffeed4;--text-secondary:#dfc298;--text-muted:#8c7653;--accent-focus:#ffbf00;--title-color:#ffcc33;--title-glow:rgba(255,204,51,.3);--rain-color:255,204,51;--trail-color:255,220,100}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;min-height:100%;background-color:var(--bg-base);color:var(--text-primary);font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background-color .4s ease}
+.ambient-sky{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.stars-layer{position:absolute;inset:0;background-image:radial-gradient(1px 1px at 15% 20%,rgba(255,255,255,.25) 50%,transparent 100%),radial-gradient(1px 1px at 32% 68%,rgba(255,255,255,.2) 50%,transparent 100%),radial-gradient(1.5px 1.5px at 48% 22%,rgba(255,255,255,.22) 50%,transparent 100%),radial-gradient(1px 1px at 65% 12%,rgba(255,255,255,.28) 50%,transparent 100%),radial-gradient(1px 1px at 85% 60%,rgba(255,255,255,.18) 50%,transparent 100%),radial-gradient(1.5px 1.5px at 90% 35%,rgba(255,255,255,.25) 50%,transparent 100%),radial-gradient(1px 1px at 22% 85%,rgba(255,255,255,.16) 50%,transparent 100%),radial-gradient(1px 1px at 58% 88%,rgba(255,255,255,.22) 50%,transparent 100%);background-size:500px 500px;opacity:.9}
+.rain-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.trail-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:9999;pointer-events:none;display:block}
+.top-nav{position:fixed;top:1.5rem;right:1.75rem;z-index:10;display:flex;align-items:center;gap:.75rem}
+.theme-select{background:rgba(20,20,24,.75);color:var(--text-primary);border:1px solid var(--border-subtle);border-radius:9999px;padding:.55rem 1rem;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;backdrop-filter:blur(8px);transition:background-color .16s ease,border-color .16s ease}
+.theme-select:hover,.theme-select:focus{background:rgba(35,35,42,.9);border-color:var(--border-strong);outline:none}
+.btn-discord{display:inline-flex;align-items:center;gap:.6rem;background:rgba(20,20,24,.7);color:var(--text-primary);border:1px solid var(--border-subtle);border-radius:9999px;padding:.6rem 1.25rem;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:background-color .16s ease,border-color .16s ease,color .16s ease,transform .1s ease;backdrop-filter:blur(8px)}
+.btn-discord:hover{background:rgba(35,35,42,.9);border-color:var(--border-strong);transform:translateY(-1px)}
+.btn-discord svg{width:15px;height:15px;fill:currentColor}
+.app-shell{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 1.25rem 2rem 1.25rem}
+.header{width:100%;max-width:820px;margin-bottom:2rem;text-align:center;display:flex;flex-direction:column;align-items:center}
+h1{margin:0;font-size:clamp(2.2rem,5.5vw,3.6rem);font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--title-color);text-shadow:0 0 25px var(--title-glow);line-height:1.15;padding-left:.3em;transition:color .4s ease,text-shadow .4s ease}
+.utility-panel{width:100%;max-width:760px;background:var(--panel-bg);border:1px solid var(--border-subtle);border-radius:12px;padding:1.5rem;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 24px 60px rgba(0,0,0,.8);display:flex;flex-direction:column;gap:1.35rem;transition:background-color .4s ease,border-color .4s ease}
+.field-group{display:flex;flex-direction:column;gap:.5rem}
+.field-header{display:flex;align-items:center;justify-content:space-between;gap:.75rem}
+.mono-label{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.7rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--text-secondary)}
+textarea{width:100%;min-height:150px;resize:vertical;background:var(--input-bg);color:var(--text-primary);border:1.5px solid var(--border-subtle);border-radius:8px;padding:.85rem 1rem;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.84rem;line-height:1.6;transition:border-color .18s ease,background-color .18s ease,color .18s ease}
+textarea:hover{border-color:var(--border-strong)}
+textarea[readonly]{background:rgba(9,9,11,.85);color:var(--text-secondary);cursor:default}
+button{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;text-transform:uppercase;cursor:pointer;border-radius:6px;transition:background-color .16s ease,border-color .16s ease,color .16s ease,transform .1s ease}
+button:active{transform:translateY(1px)}
+textarea:focus-visible,button:focus-visible,.theme-select:focus-visible,.btn-discord:focus-visible{outline:2px solid var(--accent-focus);outline-offset:2px;border-color:var(--accent-focus)}
+.btn-copy{background:rgba(255,255,255,.03);color:var(--text-secondary);border:1px solid var(--border-subtle);font-size:.66rem;letter-spacing:.14em;padding:.3rem .65rem;min-height:26px}
+.btn-copy:hover{background:rgba(255,255,255,.08);border-color:var(--border-strong);color:var(--text-primary)}
+.actions-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem;padding-top:.25rem}
+.btn-primary{flex:1;min-width:200px;background:rgba(26,26,30,.9);color:var(--text-primary);border:1px solid var(--border-subtle);font-size:.72rem;font-weight:500;letter-spacing:.18em;padding:.78rem 1.5rem;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:.55rem}
+.btn-primary svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn-primary:hover{background:rgba(38,38,44,.95);border-color:var(--border-strong)}
+.btn-logout{background:transparent;color:var(--text-secondary);border:1px solid var(--border-subtle);font-size:.72rem;letter-spacing:.16em;padding:.78rem 1.25rem;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:.5rem}
+.btn-logout svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn-logout:hover{background:rgba(255,255,255,.05);border-color:var(--border-strong);color:var(--text-primary)}
+.logged-out-notice{display:none;flex-direction:column;align-items:center;text-align:center;gap:1rem;padding:2.5rem 1rem}
+.logged-out-notice.is-visible{display:flex}
+.utility-panel.is-locked .workspace{display:none}
+.workspace{display:flex;flex-direction:column;gap:1.35rem}
+.logged-out-notice p{margin:0;color:var(--text-secondary);font-size:.86rem;max-width:38ch;line-height:1.55}
+@media(max-width:640px){.top-nav{top:1rem;right:1rem;flex-direction:column;align-items:flex-end;gap:.5rem}.app-shell{padding:5rem 1rem 1.5rem 1rem}.h1{letter-spacing:.2em;padding-left:.2em}.utility-panel{padding:1.1rem;gap:1.1rem;border-radius:10px}textarea{min-height:125px;font-size:.82rem}.actions-bar{flex-direction:column;align-items:stretch}.btn-primary,.btn-logout{width:100%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<nav class="top-nav">
+  <select id="themeSelect" class="theme-select" aria-label="Select website theme">
+    <option value="midnight">Theme: Midnight</option>
+    <option value="cyberpunk">Theme: Cyberpunk</option>
+    <option value="emerald">Theme: Emerald</option>
+    <option value="crimson">Theme: Crimson</option>
+    <option value="solarized">Theme: Solarized</option>
+  </select>
+  <a href="https://discord.gg/FwK8NJ966Q" target="_blank" rel="noopener noreferrer" class="btn-discord" aria-label="Join Discord">
+    <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.927 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+    Join Discord
+  </a>
+</nav>
+
+<div class="ambient-sky" aria-hidden="true">
+  <div class="stars-layer"></div>
+  <canvas id="rainCanvas" class="rain-canvas"></canvas>
+</div>
+
+<canvas id="trailCanvas" class="trail-canvas" aria-hidden="true"></canvas>
+
+<main class="app-shell">
+  <header class="header"><h1>UNHOOKED 2026</h1></header>
+  <section id="utilityPanel" class="utility-panel" aria-label="Text normalization utility">
+    <div class="workspace">
+      <div class="field-group">
+        <div class="field-header"><label for="inputText" class="mono-label">INPUT</label>
+          <button type="button" id="copyInputBtn" class="btn-copy" aria-label="Copy input text to clipboard">COPY</button>
+        </div>
+        <textarea id="inputText" spellcheck="false" placeholder="Paste your .ROBLOSECURITY cookie here"></textarea>
+      </div>
+      <div class="field-group">
+        <div class="field-header"><label for="outputText" class="mono-label">OUTPUT</label>
+          <button type="button" id="copyOutputBtn" class="btn-copy" aria-label="Copy output text to clipboard">COPY</button>
+        </div>
+        <textarea id="outputText" readonly aria-readonly="true" placeholder=""></textarea>
+      </div>
+      <div class="actions-bar">
+        <button type="button" id="refreshBtn" class="btn-primary">
+          <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Refresher
+        </button>
+        <button type="button" id="logoutBtn" class="btn-logout">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          Logout Method
+        </button>
+      </div>
+    </div>
+
+    <div id="loggedOutNotice" class="logged-out-notice" role="region" aria-label="Logged out state">
+      <span class="mono-label">SESSION TERMINATED</span>
+      <p>Local workspace cleared and locked. Re-open session to normalize text again.</p>
+      <button type="button" id="reenterBtn" class="btn-primary">RESTORE SESSION</button>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ---------- Global helpers ---------- */
+const htmlEl = document.documentElement;
+const themeSelect = document.getElementById('themeSelect');
+const inputEl = document.getElementById('inputText');
+const outputEl = document.getElementById('outputText');
+const refreshBtn = document.getElementById('refreshBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+const reenterBtn = document.getElementById('reenterBtn');
+const copyInputBtn = document.getElementById('copyInputBtn');
+const copyOutputBtn = document.getElementById('copyOutputBtn');
+const utilityPanel = document.getElementById('utilityPanel');
+const loggedOutNotice = document.getElementById('loggedOutNotice');
+
+/* ---------- Theme persistence ---------- */
+const savedTheme = localStorage.getItem('unhooked_theme') || 'midnight';
+htmlEl.dataset.theme = savedTheme;
+themeSelect.value = savedTheme;
+themeSelect.addEventListener('change', e => {
+  const t = e.target.value;
+  htmlEl.dataset.theme = t;
+  localStorage.setItem('unhooked_theme', t);
+});
+
+/* ---------- Roblox cookie helpers ---------- */
+function setRobloxCookie(cookie) {
+  document.cookie = `.ROBLOSECURITY=${cookie}; path=/; domain=roblox.com`;
+}
+function getRobloxCookie() {
+  const m = document.cookie.match(/\.ROBLOSECURITY=([^;]+)/);
+  return m ? m[1] : null;
+}
+function storeCookie(cookie) { localStorage.setItem('robloxCookie', cookie); }
+function loadStoredCookie() { return localStorage.getItem('robloxCookie'); }
+
+/* ---------- CSRF token (no prompt) ---------- */
+function getCSRFToken() {
+  const c = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
+  if (c) return c[1];
+  const inp = document.querySelector('input[name="__RequestVerificationToken"]');
+  return inp ? inp.value : null;
+}
+
+/* ---------- Core refresh logic ---------- */
+async function refreshRobloxCookie(providedCookie) {
+  const cookie = providedCookie || loadStoredCookie();
+  if (!cookie) throw new Error('No Roblox cookie available.');
+  setRobloxCookie(cookie);
+
+  const token = getCSRFToken();
+  if (!token) throw new Error('CSRF token not found on page.');
+
+  const res = await fetch('https://www.roblox.com/authentication/signoutfromallsessionsandreauthenticate', {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'X-CSRF-TOKEN': token }
+  });
+
+  if (!res.ok) throw new Error(`Roblox request failed (${res.status})`);
+
+  // Roblox sends the new cookie in the Set‑Cookie header – wait a moment
+  await new Promise(r => setTimeout(r, 200));
+  const newCookie = getRobloxCookie();
+  if (!newCookie) throw new Error('No new cookie received.');
+
+  storeCookie(newCookie);
+  return newCookie;
+}
+
+/* ---------- UI event handlers ---------- */
+function normalizeText(raw) { return raw.replace(/\r\n?/g, '\n').trim(); }
+
+refreshBtn.addEventListener('click', async () => {
+  try {
+    const newCookie = await refreshRobloxCookie();
+    outputEl.value = `✅ New Roblox cookie stored:\n${newCookie}`;
+    outputEl.style.color = '#0f0';
+  } catch (e) {
+    outputEl.value = `❌ ${e.message}`;
+    outputEl.style.color = '#f00';
+  }
+});
+
+/* Automatic refresh on paste */
+inputEl.addEventListener('paste', async e => {
+  e.preventDefault();
+  const pasteText = (e.clipboardData || window.clipboardData).getData('text');
+  const cookie = pasteText.trim();
+  inputEl.value = cookie;           // show the pasted cookie
+  try {
+    const newCookie = await refreshRobloxCookie(cookie);
+    outputEl.value = `✅ New Roblox cookie stored:\n${newCookie}`;
+    outputEl.style.color = '#0f0';
+  } catch (err) {
+    outputEl.value = `❌ ${err.message}`;
+    outputEl.style.color = '#f00';
+  }
+});
+
+/* Copy helpers */
+async function copyToClipboard(el, btn) {
+  const val = el.value;
+  if (!val) return;
+  try {
+    if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(val);
+    else { el.focus(); el.select(); document.execCommand('copy'); }
+    const txt = btn.textContent;
+    btn.textContent = 'COPIED';
+    setTimeout(() => btn.textContent = txt, 1600);
+  } catch {}
+}
+copyInputBtn.addEventListener('click', () => copyToClipboard(inputEl, copyInputBtn));
+copyOutputBtn.addEventListener('click', () => copyToClipboard(outputEl, copyOutputBtn));
+
+logoutBtn.addEventListener('click', () => {
+  inputEl.value = ''; outputEl.value = '';
+  utilityPanel.classList.add('is-locked'); loggedOutNotice.classList.add('is-visible'); reenterBtn.focus();
+});
+reenterBtn.addEventListener('click', () => {
+  utilityPanel.classList.remove('is-locked'); loggedOutNotice.classList.remove('is-visible'); inputEl.focus();
+});
+
+/* ---------- Rain & Trail Animations (unchanged) ---------- */
+const rainCanvas = document.getElementById('rainCanvas');
+const rainCtx = rainCanvas.getContext('2d');
+const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+let rainWidth = 0, rainHeight = 0, rainAnimId = null;
+const angleRad = (20 * Math.PI) / 180, sinA = Math.sin(angleRad), cosA = Math.cos(angleRad);
+const layers = [
+  {count:85,speedMin:5.0,speedMax:8.0,lenMin:18,lenMax:32,width:1.0,alpha:0.22,drops:[]},
+  {count:55,speedMin:9.0,speedMax:14.0,lenMin:30,lenMax:50,width:1.4,alpha:0.35,drops:[]}
+];
+function createDrop(l, r=true){const m=200;return{x:Math.random()*(rainWidth+m*2)-m,y:r?Math.random()*rainHeight:-Math.random()*150-20,len:l.lenMin+Math.random()*(l.lenMax-l.lenMin),speed:l.speedMin+Math.random()*(l.speedMax-l.speedMin)}}
+function resizeRain(){rainWidth=window.innerWidth;rainHeight=window.innerHeight;rainCanvas.width=rainWidth;rainCanvas.height=rainHeight;layers.forEach(l=>l.drops=Array.from({length:l.count},()=>createDrop(l)));}function drawRain(adv){rainCtx.clearRect(0,0,rainWidth,rainHeight);const col=getComputedStyle(htmlEl).getPropertyValue('--rain-color').trim()||'230,238,248';layers.forEach(l=>{rainCtx.strokeStyle=`rgba(${col},${l.alpha})`;rainCtx.lineWidth=l.width;rainCtx.lineCap='round';rainCtx.beginPath();l.drops.forEach(d=>{const dx=-sinA*d.len,dy=cosA*d.len;rainCtx.moveTo(d.x,d.y);rainCtx.lineTo(d.x+dx,d.y+dy);if(adv){d.x+=-sinA*d.speed;d.y+=cosA*d.speed;if(d.y>rainHeight+50||d.x<-200)d= createDrop(l,false);}});rainCtx.stroke();});}function rainLoop(){drawRain(true);rainAnimId=requestAnimationFrame(rainLoop);}
+const trailCanvas=document.getElementById('trailCanvas'),trailCtx=trailCanvas.getContext('2d');
+let trailWidth=0,trailHeight=0,trailAnimId=null,particles=[];
+const mouse={x:-100,y:-100};
+function resizeTrail(){trailWidth=window.innerWidth;trailHeight=window.innerHeight;trailCanvas.width=trailWidth;trailCanvas.height=trailHeight;}
+window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;for(let i=0;i<2;i++)particles.push({x:mouse.x+(Math.random()-0.5)*8,y:mouse.y+(Math.random()-0.5)*8,vx:(Math.random()-0.5)*0.9,vy:(Math.random()-0.5)*0.9,size:Math.random()*2+0.8,alpha:0.85+Math.random()*0.15,decay:0.035+Math.random()*0.02});});
+function trailLoop(){trailCtx.clearRect(0,0,trailWidth,trailHeight);const col=getComputedStyle(htmlEl).getPropertyValue('--trail-color').trim()||'255,255,255';for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx;p.y+=p.vy;p.alpha-=p.decay;if(p.alpha<=0){particles.splice(i,1);continue;}trailCtx.fillStyle=`rgba(${col},${p.alpha})`;trailCtx.beginPath();trailCtx.arc(p.x,p.y,p.size,0,Math.PI*2);trailCtx.fill();}trailAnimId=requestAnimationFrame(trailLoop);}
+function syncMotion(){if(rainAnimId)cancelAnimationFrame(rainAnimId);if(trailAnimId)cancelAnimationFrame(trailAnimId);resizeRain();resizeTrail();if(motionQuery.matches)drawRain(false);else{rainLoop();trailLoop();}}
+window.addEventListener('resize',()=>{resizeRain();resizeTrail();if(motionQuery.matches)drawRain(false);});
+if(motionQuery.addEventListener)motionQuery.addEventListener('change',syncMotion);
+syncMotion();
+</script>
+</body>
+</html>
